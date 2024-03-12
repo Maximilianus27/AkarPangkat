@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Root Test Game</title>
+  <style>
+    body{
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      width: 100vw;
+      text-align: center;
+      align-items:center;
+      justify-content: center;
+    }
+    input[type="number"]{
+      outline: none;
+      border: black 1px solid;
+      border-radius: 10px;
+      width: 80%;
+      padding: .5em;
+      text-align: center;
+      font-size: 1.5rem;
+      margin: 3em;
+    }
+    button#confirm{
+      outline: none;
+      border: transparent 1px solid;
+      padding: 5em;
+      background: whitesmoke;
+      border-radius: 100em;
+      transition: all .5s ease;
+    }
+    button#confirm:hover{
+      border: black 1px solid;
+    }
+    h3 p{
+      margin: 0;
+    }
+    h1{
+      font-size: 3rem;
+    }
+    .display{
+      padding: 1em;
+      width: 80%;
+      border: 1px solid darkgray;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .display p{
+      margin: 0;
+    }
+    .display #timer{
+      font-weight: bold;
+      font-size: 2rem;
+    }
+    .cheatTable{
+      position: absolute;
+      height: 100vh;
+      width: 70vw;
+      background: wheat;
+      top: 0;
+      left: -100%;
+      border-radius: 0 1em 1em 0;
+      transition: all .5s ease;
+      overflow: scroll;
+    }
+    .cheatTable p{
+      margin: 1em;
+    }
+    label{
+      position: absolute;
+      right: 0;
+      top: 0;
+      opacity: 0.1;
+      cursor: pointer;
+    }
+    input[type="checkbox"]{
+      display: none;
+    }
+    #toogle:checked ~ .cheatTable{
+      left: 0%;
+    }
+  </style>
+</head>
+<body>
+  <div class="display">
+    <p id="streak">0</p>
+    <p id="timer">0:0</p>
+    <p id="score">-√ -❌</p>
+  </div>
+  <h3 id="myAnswer">Akar pangkat dari</h3>
+  <h1 id="question">Ready?</h1>
+  
+  <input type="number" name="answer" id="answer" value="" placeholder="Write your answer here..."/>
+  <button id="confirm" onclick="checkAnswer()">⭕</button>
+  
+  <input type="checkbox" name="toogle" id="toogle" />
+  <label for="toogle">=</label>
+  
+  <div class="cheatTable">
+
+  </div>
+  
+  <script type="text/javascript" charset="utf-8">
+    let questionText = document.querySelector("#question");
+    let scoreText = document.querySelector("#score");
+    let answerText = document.querySelector("#myAnswer");
+    let answer = document.querySelector("#answer");
+    let streakText = document.querySelector("#streak");
+    let timerText = document.querySelector("#timer");
+    let cheatTable = document.querySelector(".cheatTable");
+    
+    var num = 0;
+    let streak = 0;
+    let rightAns = 0; 
+    let wrongAns = 0;
+    
+    let minutes = 0;
+    let seconds = 0;
+    function start(){
+      num = Math.floor(Math.random() * (500 - 100));
+      questionText.textContent = "√"+num*num;
+      
+    }
+    
+    function checkAnswer(){
+      if(answer.value == ""){
+        answerText.style.color ="black"
+        answerText.textContent = "Silahkan masukan jawabannya.";
+      }
+      else if(answer.value == num)
+      {
+        answerText.style.color ="green"
+        answerText.textContent = answer.value;
+        rightAns++;
+        streak++;
+        updateScore();
+        start();
+      }
+      else
+      {
+        answerText.style.color = "red";
+        answerText.textContent = answer.value;
+        p = document.createElement("p");
+        p.textContent = num;
+        p.style.color = "green";
+        answerText.appendChild(p);
+        wrongAns++;
+        streak = 0;
+        updateScore();
+      }
+      
+      start();
+    }
+    function updateScore(){
+      streakText.textContent = streak + "🔥";
+      scoreText.textContent = rightAns + "✓  " + wrongAns + "❌";
+      answer.value = "";
+      switch (streak){
+      case 3:
+        alert("Cerdas!!! 3 kali berturut-turut! ");
+        break;
+      case 4:
+        alert("Cerdas!!! 4 kali berturut-turut! ");
+        break;
+      }
+    }
+    start();
+    
+    for(let i = 0; i < 50 + 1; i++){
+      pe = document.createElement("p");
+      pe.textContent += i*i;
+      cheatTable.appendChild(pe);
+    }
+    
+    setInterval(()=>{
+      seconds++;
+      if(seconds>60){
+        minutes++;
+        seconds = 0;
+      }
+      timerText.textContent = minutes + "m" + seconds + "s";
+    },1000)
+  </script>
+</body>
+</html>
